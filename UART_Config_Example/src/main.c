@@ -3,7 +3,7 @@
 *   V Kaiser
 *
 * Overview: 
-* Writes characters to Terminal
+* Writes characters to Terminalasdjkh
 * Turns LED0 on/off Via Button0 state, and reports state in terminal
 * Read/Echo user-entered character(s) from terminal
 */
@@ -64,9 +64,10 @@ int main (void)
 	uint8_t string[] = "Hello World!\r\n";
 	uint8_t strON[] = "On\r\n";
 	uint8_t strOFF[] = "Off\r\n";
+	uint8_t strNL[] = "\r\n";
 
 	uint8_t pushFlag = 0;
-	uint8_t rx_char = 0;
+	//uint8_t rx_char = 0;
 
 	system_init();
 	configure_usart();
@@ -99,11 +100,13 @@ int main (void)
 				pushFlag = 0;
 			}
 		}
-		// Echo characters typed into Terminal
+		// Echo characters typed into Terminal, and RX/TX on a new line each character
 		if (usart_read_wait(&usart_instance, &temp) == STATUS_OK) {
 			
-			while (usart_write_wait(&usart_instance, temp) != STATUS_OK) {
-			}
+				while (usart_write_wait(&usart_instance, temp) != STATUS_OK) {		
+				}
+				usart_write_buffer_wait(&usart_instance, strNL, sizeof(strNL));
 		}
+
 	} //while(true)
 } //main()
